@@ -34,13 +34,20 @@ LSPServer >> jsonRpcServer: anObject [
 	jsonRpcServer := anObject
 ]
 
-{ #category : #'changing state' }
+{ #category : #'state transitions' }
 LSPServer >> lspExit [
 	self shouldBeImplemented
 ]
 
-{ #category : #'changing state' }
+{ #category : #'state transitions' }
 LSPServer >> lspInitializeWithParameters: initializeParams [
+	self flag: #TODO. "Handle initializeParams"
+	
+	self state: LSPRunningServer new
+]
+
+{ #category : #'state transitions' }
+LSPServer >> lspShutdown [
 	self shouldBeImplemented
 ]
 

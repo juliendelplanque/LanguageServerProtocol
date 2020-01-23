@@ -1,23 +1,18 @@
 Class {
 	#name : #LSPHandler,
 	#superclass : #JRPCAbstractHandler,
+	#instVars : [
+		'lspServer'
+	],
 	#category : #'LanguageServerProtocol-Handlers'
 }
 
-{ #category : #testing }
-LSPHandler >> expectNotification [
-	"Returns true if the handler expects a notification.
-	 Else, returns false which means the handler expectes a request.
-	 To be defined by concrete subclasses.
-	"
-	^ self expectRequest not
+{ #category : #accessing }
+LSPHandler >> lspServer [
+	^ lspServer
 ]
 
-{ #category : #testing }
-LSPHandler >> expectRequest [
-	"Returns true if the handler expects a request.
-	 Else, returns false which means the handler expectes a notification.
-	 To be defined by concrete subclasses.
-	"
-	^ self subclassResponsibility
+{ #category : #accessing }
+LSPHandler >> lspServer: anObject [
+	lspServer := anObject
 ]

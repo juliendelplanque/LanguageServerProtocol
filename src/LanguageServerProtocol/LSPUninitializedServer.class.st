@@ -14,6 +14,16 @@ Class {
 	#category : #'LanguageServerProtocol-Model'
 }
 
+{ #category : #'as yet unclassified' }
+LSPUninitializedServer >> enterState [
+	self server
+		addHandler: LSPInitialize new;
+		defaultHandler: (JRPCBlockHandler new
+								methodName: '*';
+								block: [ LSPServerUninitialized signal ];
+								yourself )
+]
+
 { #category : #extracting }
 LSPUninitializedServer >> extractInitializeParamsFrom: aJRPCRequestObject [
 	^ self shouldBeImplemented

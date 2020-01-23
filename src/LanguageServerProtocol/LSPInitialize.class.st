@@ -23,6 +23,11 @@ Class {
 	#category : #'LanguageServerProtocol-Handlers'
 }
 
+{ #category : #accessing }
+LSPInitialize class >> defaultMethodName [
+	^ 'initialize'
+]
+
 { #category : #initialization }
 LSPInitialize >> initialize [
 	super initialize.

@@ -1,8 +1,32 @@
 Class {
 	#name : #LSPMessageProcessor,
 	#superclass : #JRPCMessageProcessor,
+	#instVars : [
+		'defaultNotificationHandler',
+		'defaultRequestHandler'
+	],
 	#category : #'LanguageServerProtocol-Protocol'
 }
+
+{ #category : #accessing }
+LSPMessageProcessor >> defaultNotificationHandler [
+	^ defaultNotificationHandler
+]
+
+{ #category : #accessing }
+LSPMessageProcessor >> defaultNotificationHandler: anObject [
+	defaultNotificationHandler := anObject
+]
+
+{ #category : #accessing }
+LSPMessageProcessor >> defaultRequestHandler [
+	^ defaultRequestHandler
+]
+
+{ #category : #accessing }
+LSPMessageProcessor >> defaultRequestHandler: anObject [
+	defaultRequestHandler := anObject
+]
 
 { #category : #'handling - json' }
 LSPMessageProcessor >> handleJSON: aJSONString [
@@ -19,4 +43,18 @@ LSPMessageProcessor >> handleJSON: aJSONString [
 		writeStream nextPut: Character cr; nextPut: Character lf.
 		writeStream nextPut: Character cr; nextPut: Character lf.
 		writeStream nextPutAll: returnedJRPCJSON ]
+]
+
+{ #category : #accessing }
+LSPMessageProcessor >> handlerFor: aRequestOrNotification [
+	^ [
+		super handlerFor: aRequestOrNotification
+	] on: JRPCNonExistentHandler
+	do: [ :error |
+		(aRequestOrNotification isRequest and: [ self defaultRequestHandler isNotNil ])
+			ifTrue: [ self defaultRequestHandler ]
+			ifFalse: [ 
+				(aRequestOrNotification isNotification and: [ self defaultNotificationHandler isNotNil ])
+					ifTrue: [ self defaultNotificationHandler ]
+					ifFalse: [ error pass ] ] ]
 ]
